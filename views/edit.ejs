@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- External CSS file -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome CDN -->
+
+</head>
+<body>
+    <header>
+        <h1>Edit a Blog Post</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/create">Create Post</a></li>
+                <li><a href="/edit">Edit Post</a></li>
+                <li><a href="/delete">Delete Post</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="posts">
+            <h2>Blog Posts</h2>
+            <ul>
+                <% data.forEach(post => { %>
+                    <li>
+                        <a href="javascript:void(0)" onclick='toggleEdit("<%=post.id %>")'><%= post.title %></a>
+                        <i class="fas fa-pen" onclick='toggleEdit("<%=post.id %>")' style="cursor: pointer; margin-left: 8px;"></i>
+                        <!-- Hidden edit form -->
+                        <div id="edit-form-<%= post.id %>" style="display:none; margin-top: 10px;">
+                            <form action="/edit-post" method="POST">
+                                <input type="hidden" name="id" value="<%= post.id %>">
+                                
+                                <label for="title">Title:</label><br>
+                                <input type="text" name="title" value="<%= post.title %>"><br><br>
+                                
+                                <label for="content">Content:</label><br>
+                                <textarea name="content" rows="4" cols="50"><%= post.data %></textarea><br><br>
+                                
+                                <button type="submit">Save Changes</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> My Blog</p>
+    </footer>
+    <script>
+        function toggleEdit(id) {
+            const form = document.getElementById(`edit-form-${id}`);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
